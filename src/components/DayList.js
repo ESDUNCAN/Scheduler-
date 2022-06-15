@@ -5,12 +5,12 @@ import DayListItem from "./DayListItem";
 
 
 export default function DayList(props) {
-  const arr = props.days.map(x => (<DayListItem
-    key={x.id}
-    name={x.name}
-    spots={x.spots}
-    selected={x.name === props.day}
-    setDay={props.setDay}
+  const arr = props.days.map(day => (<DayListItem
+    key={day.id}
+    name={day.name}
+    spots={day.spots}
+    selected={day.name === props.value}
+    setDay={props.onChange}
   />))
 
   return (
