@@ -9,8 +9,6 @@ import Empty from "./Empty";
 
 export default function Appointment(props) {
 
-  console.log("PROPS", props)
-
   return (
     <article className="appointment">
       <Header time={props.time} />
