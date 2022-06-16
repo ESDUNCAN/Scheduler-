@@ -3,7 +3,7 @@ import "./styles.scss";
 
 
 
-export default function Application(props) {
+export default function Appointment(props) {
 
   return (
     <article className="appointment"></article>
