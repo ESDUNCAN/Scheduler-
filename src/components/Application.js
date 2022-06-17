@@ -3,75 +3,49 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment/index";
 import axios from "axios";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
-
-const appointments = {
-  "1": {
-    id: 1,
-    time: "12pm",
-  },
-  "2": {
-    id: 2,
-    time: "1pm",
-    interview: {
-      student: "Lydia Miller-Jones",
-      interviewer: {
-        id: 3,
-        name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
-      }
-    }
-  },
-  "3": {
-    id: 3,
-    time: "2pm",
-  },
-  "4": {
-    id: 4,
-    time: "3pm",
-    interview: {
-      student: "Archie Andrews",
-      interviewer: {
-        id: 4,
-        name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
-      }
-    }
-  },
-  "5": {
-    id: 5,
-    time: "4pm",
-  }
-};
 
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    // you may put the line below, but will have to remove/comment hardcoded appointments variable
-    appointments: {}
+    appointments: {},
+    interviewers: {},
   });
+  console.log("STATEINTERVIEWERS", state.interviewers)
+
+
   const setDay = day => setState({ ...state, day });
-  const setDays = (days) => {
-    setState(prev => ({ ...prev, days }));
-  }
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day)
 
 
-  const schedule = Object.values(appointments).map((apt) => {
+  const schedule = dailyAppointments.map((appt) => {
+    const interview = getInterview(state, appt.interview);
     return (
       <Appointment
-        key={apt.id}
-        id={apt.id}
-        time={apt.time}
-        interview={apt.interview}
+        key={appt.id}
+        id={appt.id}
+        time={appt.time}
+        interview={interview}
       />
     )
   })
+
+
   useEffect(() => {
     const responseDays = `http://localhost:8001/api/days`
-    axios.get(responseDays).then(response => {
+    const responseAppointments = `http://localhost:8001/api/appointments`
+    const responseInterviewers = `http://localhost:8001/api/interviewers`
 
-      setDays(response.data)
+    Promise.all([
+      axios.get(responseDays),
+      axios.get(responseAppointments),
+      axios.get(responseInterviewers)
+    ]).then((all) => {
+      console.log("ALL", all)
+      setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
   }, [])
   return (
