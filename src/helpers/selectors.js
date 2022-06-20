@@ -6,6 +6,13 @@ export function getAppointmentsForDay(state, day) {
   return dayObject.appointments.map(appt => state.appointments[appt])
 }
 
+export function getInterviewersForDay(state, name) {
+  const dayObject = state.days.find(dObject => dObject.name === name)
+  if (!dayObject) { return [] }
+
+  return dayObject.interviewers.map(appt => state.interviewers[appt])
+}
+
 export function getInterview(state, interview) {
   if (!interview) {
     return null
@@ -15,3 +22,4 @@ export function getInterview(state, interview) {
     interviewer: state.interviewers[interview.interviewer]
   }
 }
+
