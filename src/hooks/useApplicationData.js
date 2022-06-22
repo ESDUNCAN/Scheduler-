@@ -8,6 +8,48 @@ export default function useApplicationData() {
     appointments: {},
     interviewers: {},
   });
+
+  const updateSpots = (state) => {
+    // find day and make a copy
+    const dayToChange = state.days.find(day => day.name === state.day)
+    const newDay = { ...dayToChange }
+
+    //count how many free spots
+    const emptyAppointments = dayToChange.appointments.filter(appointmentId => !state.appointments[appointmentId].interview)
+    const spots = emptyAppointments.length
+
+    //update spots in the newDay
+    newDay.spots = spots
+
+    //copy the days and replace old day with new day
+    const newDays = [...state.days]
+    const dayIndex = state.days.findIndex(day => day.name === state.day)
+    newDays[dayIndex] = newDay
+
+    //update the days in side the state
+
+    const newState = { ...state }
+    newState.days = newDays
+
+    return newState
+  }
+
+  // const bookInterview = (interview, id) => {
+  //   const newAppointment = {...state.appointments[id]}
+  //   newApppointment.interview = interview
+
+  //   const updatedAppoitments = {...state.appointments}
+  //   updatedAppoitments[id] = newAppointment
+
+  //   const newState = {...state}
+  //   newState.appointments = updatedAppoitments
+
+  //   const newNewState = updateSpots(newState)
+
+  //   setState(newNewState)
+  // }
+
+
   const setDay = day => setState({ ...state, day });
 
   function bookInterview(id, interview) {
@@ -20,16 +62,13 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    setState({
-      ...state,
-      appointments
-    });
+    const newState = { ...state }
+    newState.appointments = appointments
+    const newNewState = updateSpots(newState)
+
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(res => {
-        setState({
-          ...state,
-          appointments
-        })
+        setState({ newNewState })
         return res
       })
   }
@@ -42,13 +81,13 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    const newState = { ...state }
+    newState.appointments = appointments
+    const newNewState = updateSpots(newState)
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(res => {
-        setState({
-          ...state,
-          appointments
-        })
+        setState({ newNewState })
         return res
       })
   }

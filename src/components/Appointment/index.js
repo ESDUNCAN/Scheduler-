@@ -64,8 +64,6 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onCancel={back}
           onSave={save}
-          name={props.name ? props.name : props.interview.student}
-
         />
       }
       {mode === SAVING && <Status message={SAVING} />}
