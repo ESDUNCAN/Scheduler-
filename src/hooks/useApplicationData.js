@@ -34,7 +34,6 @@ export default function useApplicationData() {
     return newState
   }
 
-
   const setDay = day => setState({ ...state, day });
 
   function bookInterview(id, interview) {
@@ -83,7 +82,6 @@ export default function useApplicationData() {
       axios.get(responseAppointments),
       axios.get(responseInterviewers)
     ]).then((all) => {
-      // console.log("ALL", all)
       setState(prev => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     })
   }, [])
