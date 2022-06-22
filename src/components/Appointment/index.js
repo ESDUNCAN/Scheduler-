@@ -39,10 +39,12 @@ export default function Appointment(props) {
       .catch(() => transition(ERROR_SAVE, true))
   }
   function cancel() {
-    transition(DELETING, true)
-    props.cancelInterview(props.id)
-      .then(() => { transition(EMPTY) })
-      .catch(() => transition(ERROR_DELETE, true))
+    if (mode === CONFIRM) {
+      transition(DELETING, true)
+      props.cancelInterview(props.id)
+        .then(() => { transition(EMPTY) })
+        .catch(() => transition(ERROR_DELETE, true))
+    }
   }
   function edit() {
     transition(EDIT)

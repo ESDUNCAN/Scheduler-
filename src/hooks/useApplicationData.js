@@ -34,60 +34,42 @@ export default function useApplicationData() {
     return newState
   }
 
-  // const bookInterview = (interview, id) => {
-  //   const newAppointment = {...state.appointments[id]}
-  //   newApppointment.interview = interview
-
-  //   const updatedAppoitments = {...state.appointments}
-  //   updatedAppoitments[id] = newAppointment
-
-  //   const newState = {...state}
-  //   newState.appointments = updatedAppoitments
-
-  //   const newNewState = updateSpots(newState)
-
-  //   setState(newNewState)
-  // }
-
 
   const setDay = day => setState({ ...state, day });
 
   function bookInterview(id, interview) {
-    // console.log(id, interview);
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
+    const newAppointment = { ...state.appointments[id] };
+    newAppointment.interview = interview;
+
+    const updatedAppointments = { ...state.appointments }
+    updatedAppointments[id] = newAppointment;
+
     const newState = { ...state }
-    newState.appointments = appointments
+    newState.appointments = updatedAppointments;
     const newNewState = updateSpots(newState)
 
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then(res => {
-        setState({ newNewState })
+        setState({ ...newNewState, updatedAppointments })
         return res
       })
   }
-  function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
+  function cancelInterview(id, interview) {
+
+    const newAppointment = { ...state.appointments[id] };
+    newAppointment.interview = interview;
+
+    const updatedAppointments = { ...state.appointments }
+    updatedAppointments[id] = newAppointment;
+
     const newState = { ...state }
-    newState.appointments = appointments
+    newState.appointments = updatedAppointments;
     const newNewState = updateSpots(newState)
 
     return axios.delete(`http://localhost:8001/api/appointments/${id}`)
       .then(res => {
-        setState({ newNewState })
+        setState({ ...newNewState, updatedAppointments })
+
         return res
       })
   }
