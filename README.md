@@ -20,6 +20,10 @@ Interviewer Scheduler is a React application that allows users to book and cance
 - When the user presses the close button of the error they are returned to the Form or Show view (skipping Status and Confirm).
 - The application makes API requests to load and persist data. We do not lose data after a browser refresh.
 
+## Screenshots 
+
+!["Home Page"](https://github.com/ESDUNCAN/Scheduler-/blob/master/docs/Scheduler%20home%20page.png?raw=true)
+!["Create + Delete"](https://github.com/ESDUNCAN/Scheduler-/blob/master/docs/Scheduler%20Creating%20+%20deleting.png?raw=true)
 
 ## Setup
 
