@@ -2,7 +2,7 @@
 
 ## Description 
 
-Interviewer Scheduler is a React application that allows users to book and cancel interviews. 
+Interviewer Scheduler is a React application that allows users to book, edit and cancel appointments with an interviewer. 
 
 ## Functionalities 
 
